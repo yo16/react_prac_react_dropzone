@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
+
 import './App.css';
 
 function App() {
@@ -8,6 +9,24 @@ function App() {
     // Do something!
     console.log("Do something!!");
     console.log(acceptedFiles);
+
+    // open if type is text/plain
+    acceptedFiles.forEach((f:File) => {
+      if (f.type === "text/plain") {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          if (typeof reader.result === "string" ) {
+            console.log(reader.result);
+          } else {
+            console.log("no string!!");
+          }
+        });
+        reader.readAsText(f, "utf-8");
+      } else {
+        console.log("no text/plain!");
+      }
+    })
+
   }, []);
 
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop});
